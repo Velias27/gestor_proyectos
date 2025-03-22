@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@heroui/react": "^2.7.5",
+    "@prisma/client": "^6.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.5.0"
+  }
+}
