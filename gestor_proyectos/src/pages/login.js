@@ -54,7 +54,7 @@ export default function Login() {
             />
           </div>
           <div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" color="primary">
               Iniciar Sesión
             </Button>
           </div>

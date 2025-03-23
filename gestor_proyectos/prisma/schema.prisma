@@ -18,7 +18,7 @@ model User {
   name          String
   email         String   @unique
   password      String
-  role          Role     @default(USER)
+  role          Role     @default(TEAM_MEMBER)
   projects      Project[]
   tasksAssigned Task[]
 }
@@ -46,5 +46,4 @@ enum Role {
   ADMIN
   PROJECT_MANAGER
   TEAM_MEMBER
-  USER
 }
