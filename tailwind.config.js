@@ -2,10 +2,15 @@ module.exports = {
   content: [
     "./pages/**/*.{js,jsx}",
     "./components/**/*.{js,jsx}",
-    "./node_modules/@heroui/react/dist/**/*.{js,jsx}",
+    "./node_modules/@heroui/react/theme/dist/**/*.{js,jsx}",
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require("@heroui/tailwindcss")({
+      defaultTheme: "dark",
+      addCommonColors: false,
+    }),
+  ],
 };

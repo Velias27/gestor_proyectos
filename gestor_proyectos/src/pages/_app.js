@@ -4,7 +4,9 @@ import { HeroUIProvider } from "@heroui/react";
 function MyApp({ Component, pageProps }) {
   return (
     <HeroUIProvider>
-      <Component {...pageProps} />
+      <div className="dark text-foreground bg-background">
+        <Component {...pageProps} />
+      </div>
     </HeroUIProvider>
   );
 }

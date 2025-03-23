@@ -14,28 +14,32 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String
-  email    String  @unique
-  password String
-  role     Role    @default(USER) 
-  projects Project[]
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  role          Role     @default(USER)
+  projects      Project[]
+  tasksAssigned Task[]
 }
 
 model Project {
-  id      String @id @default(uuid())
+  id      String  @id @default(uuid())
   name    String
   userId  String
-  user    User   @relation(fields: [userId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
   tasks   Task[]
 }
 
 model Task {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid())
   title      String
-  completed  Boolean @default(false)
+  completed  Boolean  @default(false)
   projectId  String
-  project    Project @relation(fields: [projectId], references: [id])
+  project    Project  @relation(fields: [projectId], references: [id])
+  // Campos para la asignación de tareas
+  assignedTo String? 
+  assignee   User?    @relation(fields: [assignedTo], references: [id])
 }
 
 enum Role {
@@ -44,4 +48,3 @@ enum Role {
   TEAM_MEMBER
   USER
 }
-
