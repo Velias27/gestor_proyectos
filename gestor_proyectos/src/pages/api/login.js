@@ -1,5 +1,5 @@
 // /pages/api/login.js
-import prisma from "../../lib/prisma";
+import prisma from "/lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
