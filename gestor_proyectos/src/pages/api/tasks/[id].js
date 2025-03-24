@@ -18,10 +18,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Error al obtener tarea" });
     }
   } else if (req.method === "PUT") {
-    // Permite actualizar título, estado y asignación (assignedTo)
     const { title, completed, assignedTo } = req.body;
 
-    // Solo permitir asignar tarea si el usuario es PROJECT_MANAGER (o podría ser ADMIN si se cambiara la lógica)
     if (assignedTo && authUser.role !== "PROJECT_MANAGER") {
       return res
         .status(403)
@@ -34,7 +32,7 @@ export default async function handler(req, res) {
         data: {
           title,
           completed,
-          assignedTo, // Si no se envía, no se actualiza
+          assignedTo,
         },
       });
       return res.status(200).json({ task: updatedTask });

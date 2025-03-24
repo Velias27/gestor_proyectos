@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const { title, projectId } = req.body;
-      // Se puede incluir lógica adicional para verificar permisos sobre el proyecto
       const newTask = await prisma.task.create({
         data: { title, projectId },
       });

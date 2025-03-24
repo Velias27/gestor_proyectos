@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   const { email, password } = req.body;
 
   try {
-    // Buscar el usuario por email
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -20,13 +19,11 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: "Credenciales incorrectas" });
     }
 
-    // Comparar la contraseña ingresada con la almacenada (encriptada)
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       return res.status(401).json({ error: "Credenciales incorrectas" });
     }
 
-    // Generar token JWT
     const token = jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,

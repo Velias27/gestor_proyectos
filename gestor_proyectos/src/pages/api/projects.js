@@ -8,16 +8,13 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
-      // Aquí puedes permitir que se muestren los proyectos a varios roles
       let projects;
       if (user.role === "PROJECT_MANAGER") {
-        // Por ejemplo, el project manager ve solo sus proyectos
         projects = await prisma.project.findMany({
           where: { userId: user.userId },
           include: { tasks: true },
         });
       } else {
-        // Otros roles pueden tener otra vista o, en este ejemplo, se devuelven todos
         projects = await prisma.project.findMany({ include: { tasks: true } });
       }
       return res.status(200).json({ projects });
@@ -26,7 +23,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Error al obtener proyectos" });
     }
   } else if (req.method === "POST") {
-    // Solo el Project Manager puede crear proyectos
     if (user.role !== "PROJECT_MANAGER") {
       return res
         .status(403)

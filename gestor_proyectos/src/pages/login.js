@@ -12,9 +12,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/login", { email, password });
-      // Guarda el token (por ejemplo, en localStorage)
       localStorage.setItem("token", data.token);
-      // Redirige al dashboard (o a la ruta que necesites)
       window.location.href = "/dashboard";
     } catch (err) {
       setError(err.response?.data?.error || "Error al iniciar sesión");

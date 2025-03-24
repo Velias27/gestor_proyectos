@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   const authUser = authenticate(req, res);
   if (!authUser) return;
 
-  // Solo ADMIN puede gestionar usuarios
   if (authUser.role !== "ADMIN") {
     return res.status(403).json({ error: "No autorizado" });
   }

@@ -7,14 +7,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Obtiene el token desde localStorage
     const token = localStorage.getItem("token");
 
     if (token) {
-      // Si existe token, redirige al dashboard
       router.push("/dashboard");
     } else {
-      // Si no existe token, redirige al login
       router.push("/login");
     }
     setLoading(false);
