@@ -16,12 +16,13 @@ export default function ProjectList() {
 
     const fetchProjects = async () => {
       try {
-        const res = await axios.get("./projects", {
+        const res = await axios.get("../api/projects", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setProjects(res.data.projects);
+
       } catch (error) {
         console.error("Error al obtener proyectos:", error);
       } finally {
@@ -51,7 +52,7 @@ export default function ProjectList() {
   return (
     <div className="p-8 bg-background text-foreground min-h-screen">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Proyectos</h1>
+        <h1 className="text-2xl font-bold">Mis Proyectos</h1>
         <button
           onClick={handleAddProject}
           className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
