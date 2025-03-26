@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
+import { Card } from "@heroui/card";
+import { Button } from "@heroui/button";
+
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +25,6 @@ export default function ProjectList() {
           },
         });
         setProjects(res.data.projects);
-
       } catch (error) {
         console.error("Error al obtener proyectos:", error);
       } finally {
@@ -43,57 +45,75 @@ export default function ProjectList() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Cargando proyectos...</p>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 bg-background text-foreground min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Mis Proyectos</h1>
-        <button
-          onClick={handleAddProject}
-          className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
-        >
-          Agregar Proyecto
-        </button>
-      </div>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <header className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Mis Proyectos</h1>
+          <Button onClick={handleAddProject} className="px-4 py-2 text-blue-600">
+            Agregar Proyecto
+          </Button>
+        </header>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-content1 rounded shadow">
-          <thead>
-            <tr className="text-left border-b border-divider">
-              <th className="py-3 px-4">Nombre</th>
-              <th className="py-3 px-4">Tareas</th>
-              <th className="py-3 px-4 text-right">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projects?.map((project) => (
-              <tr key={project.id} className="border-b border-muted">
-                <td className="py-3 px-4">{project.name}</td>
-                <td className="py-3 px-4">{project.tasks.length}</td>
-                <td className="py-3 px-4 text-right">
-                  <button
-                    onClick={() => handleEdit(project.id)}
-                    className="text-sm text-primary hover:underline"
-                  >
-                    Editar
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {projects?.length === 0 && (
-              <tr>
-                <td colSpan="3" className="text-center py-4 text-muted">
-                  No hay proyectos registrados.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <Card className="shadow-lg rounded-lg overflow-hidden">
+          <div className="p-4 bg-gray-100 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-700">
+              Lista de Proyectos
+            </h2>
+          </div>
+
+          <div className="p-4 bg-white">
+            <div className="overflow-x-auto">
+              <table className="table-auto w-full text-left border border-gray-200 rounded">
+                <thead className="bg-gray-200 text-gray-600 uppercase text-sm">
+                  <tr>
+                    <th className="py-3 px-4 font-semibold">Nombre</th>
+                    <th className="py-3 px-4 font-semibold">Tareas</th>
+                    <th className="py-3 px-4 font-semibold text-right">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-700 text-sm">
+                  {projects?.map((project) => (
+                    <tr
+                      key={project.id}
+                      className="border-b border-gray-200 hover:bg-gray-50"
+                    >
+                      <td className="py-3 px-4">{project.name}</td>
+                      <td className="py-3 px-4">{project.tasks.length}</td>
+                      <td className="py-3 px-4 text-right">
+                        <Button
+                          className="text-blue-600 hover:underline"
+                          onClick={() => handleEdit(project.id)}
+                          variant="link" 
+                        >
+                          Editar
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                  {projects?.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={3}
+                        className="text-center py-4 text-gray-500"
+                      >
+                        No hay proyectos registrados.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );
