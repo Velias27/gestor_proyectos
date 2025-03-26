@@ -1,4 +1,3 @@
-// src/pages/login.js
 import axios from "axios";
 import { useState } from "react";
 import { Button } from "@heroui/react";
@@ -12,7 +11,12 @@ export default function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/login", { email, password });
+
+      // Guarda token y rol del usuario
       sessionStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.user.role);
+
+      // Redirige al dashboard
       window.location.href = "/dashboard";
     } catch (err) {
       setError(err.response?.data?.error || "Error al iniciar sesión");
@@ -23,7 +27,7 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
       <div className="w-full max-w-md p-8 space-y-6 bg-content1 rounded-lg shadow">
         <h2 className="text-2xl font-bold text-center">Iniciar Sesión</h2>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="block mb-1 font-medium">
@@ -36,6 +40,7 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Ingresa tu email"
               className="w-full px-3 py-2 border border-divider rounded"
+              required
             />
           </div>
           <div>
@@ -49,13 +54,12 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Ingresa tu contraseña"
               className="w-full px-3 py-2 border border-divider rounded"
+              required
             />
           </div>
-          <div>
-            <Button type="submit" className="w-full" color="primary">
-              Iniciar Sesión
-            </Button>
-          </div>
+          <Button type="submit" className="w-full" color="primary">
+            Iniciar Sesión
+          </Button>
         </form>
       </div>
     </div>
