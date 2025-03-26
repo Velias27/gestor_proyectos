@@ -241,7 +241,16 @@ export default function EditProject() {
                         </form>
                     </div>
                 </Card>
+                <div className="flex justify-end">
+                    <Button
+                        onClick={() => router.push(`/projects`)}
+                        className="text-black px-4 py-2"
+                    >
+                        Volver a Proyectos
+                    </Button>
+                </div>
             </div>
+
         </div>
     );
 }

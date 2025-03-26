@@ -1,4 +1,3 @@
-// pages/tasks/edit/[id].js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -15,6 +14,7 @@ export default function EditTask() {
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(""); 
 
   // Obtener datos de la tarea
   useEffect(() => {
@@ -31,9 +31,7 @@ export default function EditTask() {
         });
         setTask(res.data.task);
         setTaskTitle(res.data.task.title);
-        // Inicializamos los ids de usuarios asignados
         setSelectedTeamMembers(res.data.task.assignedUsers?.map(user => user.id) || []);
-
       } catch (err) {
         console.error("Error al obtener la tarea:", err);
         setError("Error al obtener la tarea.");
@@ -85,6 +83,8 @@ export default function EditTask() {
   const handleUpdateAssignedUsers = async (e) => {
     e.preventDefault();
     const token = sessionStorage.getItem("token");
+    setError("");
+    setSuccess("");
     try {
       await axios.put(
         `/api/tasks/${id}`,
@@ -97,6 +97,8 @@ export default function EditTask() {
           selectedTeamMembers.includes(member.id)
         ),
       });
+      // Establecemos el mensaje de éxito
+      setSuccess("Los usuarios asignados se actualizaron correctamente.");
     } catch (error) {
       console.error("Error al actualizar los usuarios asignados:", error);
       setError("Error al actualizar los usuarios asignados.");
@@ -121,9 +123,8 @@ export default function EditTask() {
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
               disabled={!isEditingTitle}
-              className={`text-3xl font-bold text-gray-800 bg-transparent w-full focus:outline-none ${
-                isEditingTitle ? "border-b border-blue-500" : ""
-              }`}
+              className={`text-3xl font-bold text-gray-800 bg-transparent w-full focus:outline-none ${isEditingTitle ? "border-b border-blue-500" : ""
+                }`}
             />
           </div>
           <button
@@ -165,8 +166,8 @@ export default function EditTask() {
           </button>
         </header>
         {error && <p className="text-red-500 mb-4">{error}</p>}
+        {success && <p className="text-green-500 mb-4">{success}</p>}
 
-        {/* Card para actualizar los usuarios asignados */}
         <Card className="mb-6 shadow-lg rounded-lg overflow-hidden">
           <div className="p-4 bg-gray-100 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-700">
