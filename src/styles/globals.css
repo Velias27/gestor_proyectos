@@ -11,3 +11,45 @@
 * {
   font-family: var(--font-poppins);
 }
+
+.customInput {
+  @apply w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 focus:bg-white focus:border-blue-500 transition-colors;
+}
+
+.customPassword {
+  @apply w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 hover:bg-gray-50 focus:bg-white 
+              focus:border-blue-500 transition-colors duration-200 placeholder-gray-400;
+}
+
+.customSelect {
+  @apply w-full border border-gray-300 rounded-lg px-3 py-2 
+                bg-gray-100 hover:bg-gray-50 focus:bg-white 
+                focus:border-blue-500 transition-colors duration-200 pr-8;
+}
+
+/* BOTONES */
+
+.customButtonMain {
+  @apply w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.customButtonSecondary {
+  @apply w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+/* TABLAS */
+.customTableContainer {
+  @apply overflow-x-auto mt-6 shadow-lg;
+}
+
+.customTable {
+  @apply w-full min-w-max border-collapse table-auto bg-gray-300;
+}
+
+.customTableHeader {
+  @apply px-4 py-3 bg-gray-50 text-center text-sm font-medium text-gray-500 uppercase tracking-wider bg-gray-200;
+}
+
+.customTableData {
+  @apply px-6 py-4 whitespace-nowrap text-sm;
+}

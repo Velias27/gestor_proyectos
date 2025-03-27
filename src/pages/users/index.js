@@ -83,52 +83,34 @@ export default function UsersDashboard() {
       >
         Agregar Usuario
       </button>
-      <div className="mt-6 overflow-x-auto">
-        <table className="min-w-full border-collapse">
+      <div className="customTableContainer">
+        <table className="customTable">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ID
-              </th>
-              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nombre
-              </th>
-              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Rol
-              </th>
-              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Acciones
-              </th>
+              <th className="customTableHeader">ID</th>
+              <th className="customTableHeader">Nombre</th>
+              <th className="customTableHeader">Email</th>
+              <th className="customTableHeader">Rol</th>
+              <th className="customTableHeader">Acciones</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {users.map((user) => (
               <tr key={user.id}>
-                <td className="px-6 py-4 border whitespace-nowrap">
-                  {user.id}
-                </td>
-                <td className="px-6 py-4 border whitespace-nowrap">
-                  {user.name}
-                </td>
-                <td className="px-6 py-4 border whitespace-nowrap">
-                  {user.email}
-                </td>
-                <td className="px-6 py-4 border whitespace-nowrap">
-                  {user.role}
-                </td>
-                <td className="px-6 py-4 border whitespace-nowrap">
+                <td className="customTableData">{user.id}</td>
+                <td className="customTableData">{user.name}</td>
+                <td className="customTableData">{user.email}</td>
+                <td className="customTableData">{user.role}</td>
+                <td className="customTableData">
                   <button
                     onClick={() => openEditModal(user)}
-                    className="bg-green-500 text-white px-2 py-1 rounded mr-2"
+                    className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
                   >
                     Editar
                   </button>
                   <button
                     onClick={() => handleDeleteUser(user.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    className="bg-gray-400 text-white px-2 py-1 rounded"
                   >
                     Eliminar
                   </button>
