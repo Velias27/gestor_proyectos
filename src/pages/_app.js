@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import "../styles/globals.css";
 import { HeroUIProvider } from "@heroui/react";
 
 function MyApp({ Component, pageProps }) {

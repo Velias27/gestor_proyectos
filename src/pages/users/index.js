@@ -1,16 +1,7 @@
-// src\pages\users\users.js
+// src/pages/users/users.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-} from "@heroui/react";
-import userModal from "@/components/userModal";
+import UserModal from "../../components/userModal";
 
 export default function UsersDashboard() {
   const [users, setUsers] = useState([]);
@@ -19,15 +10,13 @@ export default function UsersDashboard() {
 
   const token =
     typeof window !== "undefined" ? sessionStorage.getItem("token") : null;
-  console.log(token);
+
   const fetchUsers = async () => {
     const token = sessionStorage.getItem("token");
-
     if (!token) {
       window.location.href = "/login";
       return;
     }
-
     try {
       const response = await axios.get("/api/users", {
         headers: { Authorization: `Bearer ${token}` },
@@ -88,48 +77,68 @@ export default function UsersDashboard() {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Gestión de Usuarios</h1>
-      <Button color="primary" onPress={openAddModal}>
+      <button
+        onClick={openAddModal}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
         Agregar Usuario
-      </Button>
-      <div className="mt-6">
-        <Table aria-label="Tabla de Usuarios">
-          <TableHeader>
-            <TableColumn>ID</TableColumn>
-            <TableColumn>Nombre</TableColumn>
-            <TableColumn>Email</TableColumn>
-            <TableColumn>Rol</TableColumn>
-            <TableColumn>Acciones</TableColumn>
-          </TableHeader>
-          <TableBody>
+      </button>
+      <div className="mt-6 overflow-x-auto">
+        <table className="min-w-full border-collapse">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nombre
+              </th>
+              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Rol
+              </th>
+              <th className="px-6 py-3 border text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
             {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="flat"
-                    size="sm"
-                    onPress={() => openEditModal(user)}
+              <tr key={user.id}>
+                <td className="px-6 py-4 border whitespace-nowrap">
+                  {user.id}
+                </td>
+                <td className="px-6 py-4 border whitespace-nowrap">
+                  {user.name}
+                </td>
+                <td className="px-6 py-4 border whitespace-nowrap">
+                  {user.email}
+                </td>
+                <td className="px-6 py-4 border whitespace-nowrap">
+                  {user.role}
+                </td>
+                <td className="px-6 py-4 border whitespace-nowrap">
+                  <button
+                    onClick={() => openEditModal(user)}
+                    className="bg-green-500 text-white px-2 py-1 rounded mr-2"
                   >
                     Editar
-                  </Button>
-                  <Button
-                    variant="flat"
-                    size="sm"
-                    color="danger"
-                    onPress={() => handleDeleteUser(user.id)}
+                  </button>
+                  <button
+                    onClick={() => handleDeleteUser(user.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded"
                   >
                     Eliminar
-                  </Button>
-                </TableCell>
-              </TableRow>
+                  </button>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </div>
-      <userModal
+      <UserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveUser}
