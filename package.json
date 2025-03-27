@@ -10,10 +10,15 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@heroui/button": "^2.2.16",
     "@heroui/react": "^2.7.5",
+    "@heroui/system": "^2.4.12",
+    "@heroui/table": "^2.2.15",
+    "@heroui/theme": "^2.4.12",
     "@prisma/client": "^6.5.0",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
+    "framer-motion": "^12.6.2",
     "jsonwebtoken": "^9.0.2",
     "next": "15.2.3",
     "react": "^19.0.0",
