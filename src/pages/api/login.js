@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+// /pages/api/login.js
+import prisma from "/lib/prisma";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
+import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -16,36 +16,23 @@ export default async function handler(req, res) {
     });
 
     if (!user) {
-      return res.status(401).json({ error: "Usuario no encontrado" });
+      return res.status(401).json({ error: "Credenciales incorrectas" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(401).json({ error: "Credenciales incorrectas" });
     }
 
-    // Simulación de token
-    const token = "fake-token";
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-    // Normalizamos el role para usarlo en el frontend
-    const normalizedRole = user.role.toLowerCase();
-
-    res.status(200).json({
-      token,
-      user: {
-        name: user.name,
-        email: user.email,
-        role:
-          normalizedRole.includes("manager")
-            ? "manager"
-            : normalizedRole.includes("team")
-            ? "member"
-            : "admin",
-      },
-    });
+    return res.status(200).json({ token });
   } catch (error) {
-    console.error("Error en login:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    console.error(error);
+    return res.status(500).json({ error: "Error interno al iniciar sesión" });
   }
 }
