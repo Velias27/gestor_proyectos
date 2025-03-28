@@ -13,8 +13,8 @@ export default function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/login", { email, password });
-      localStorage.setItem("token", data.token);
-      window.location.href = "/dashboard";
+      localStorage.setItem("token", data.token);  // Guardar token en localStorage
+      router.push("/dashboard");  // Redirigir al dashboard
     } catch (err) {
       setError(err.response?.data?.error || "Error al iniciar sesión");
     }

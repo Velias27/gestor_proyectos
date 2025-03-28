@@ -22,7 +22,8 @@ export default function EditProject() {
 
     useEffect(() => {
         if (!id) return;
-        const token = sessionStorage.getItem("token");
+
+        const token = localStorage.getItem("token");
         if (!token) {
             router.replace("/login");
             return;
@@ -37,8 +38,8 @@ export default function EditProject() {
                 setTasks(res.data.project.tasks);
                 setProjectName(res.data.project.name);
             } catch (err) {
-                console.error("Error al obtener el proyecto:", err);
-                setError("Error al obtener el proyecto.");
+                console.error("Error al obtener el proyecto:", err.response?.data || err.message);
+                setError("Error al obtener el proyecto: " + (err.response?.data?.error || err.message));
             } finally {
                 setLoading(false);
             }
@@ -48,7 +49,7 @@ export default function EditProject() {
     }, [id, router]);
 
     useEffect(() => {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (!token) return;
         const fetchTeamMembers = async () => {
             try {
@@ -57,7 +58,7 @@ export default function EditProject() {
                 });
                 setTeamMembers(res.data.teamMembers);
             } catch (err) {
-                console.error("Error al obtener los usuarios:", err);
+                console.error("Error al obtener los usuarios:", err.response?.data || err.message);
             }
         };
         fetchTeamMembers();
@@ -65,7 +66,7 @@ export default function EditProject() {
 
     const handleAddTask = async (e) => {
         e.preventDefault();
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         try {
             const res = await axios.post(
                 `/api/projects/${id}/tasks`,
@@ -81,13 +82,13 @@ export default function EditProject() {
             setTaskTitle("");
             setSelectedTeamMembers([]);
         } catch (err) {
-            console.error("Error al añadir tarea:", err);
-            setError("Error al añadir la tarea.");
+            console.error("Error al añadir tarea:", err.response?.data || err.message);
+            setError("Error al añadir la tarea: " + (err.response?.data?.error || err.message));
         }
     };
 
     const handleToggleEditing = async () => {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (isEditing) {
             try {
                 await axios.put(
@@ -98,8 +99,8 @@ export default function EditProject() {
                 setIsEditing(false);
                 setProject({ ...project, name: projectName });
             } catch (error) {
-                console.error("Error al actualizar el nombre del proyecto:", error);
-                setError("Error al actualizar el nombre del proyecto.");
+                console.error("Error al actualizar el nombre del proyecto:", error.response?.data || error.message);
+                setError("Error al actualizar el nombre del proyecto: " + (error.response?.data?.error || error.message));
             }
         } else {
             setIsEditing(true);

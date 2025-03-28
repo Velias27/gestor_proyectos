@@ -28,9 +28,24 @@ export default function PMDashboard() {
     setRole(decodedToken.role);
   }, [router]);
 
+  // Función para redirigir a la página de proyectos
+  const goToProjects = () => {
+    router.push("/projects");  // Redirige a /projects
+  };
+
   if (!role) return null; // Esperar a que el rol esté disponible antes de renderizar
 
   return (
+    <div className="min-h-screen p-6 bg-gray-50">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Project Manager Dashboard</h1>
+
+      <div className="space-y-6">
+        {/* Botón para ir a la lista de proyectos */}
+        <Button onClick={goToProjects} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">
+          Ir a Proyectos
+        </Button>
+      </div>
+    </div>
     <Layout role={role}>
       {/* Sección de bienvenida */}
       <div className="mb-6">
