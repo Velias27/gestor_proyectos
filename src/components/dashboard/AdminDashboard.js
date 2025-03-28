@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Layout from '../layout/Layout';
 
 export default function AdminDashboard() {
   const router = useRouter();
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,13 +21,19 @@ export default function AdminDashboard() {
     // Verificar si el rol es ADMIN, si no, redirigir al dashboard correspondiente
     if (decodedToken.role !== "ADMIN") {
       router.push("/dashboard"); // O redirigir a otra página o mostrar "Acceso Denegado"
+      return;
     }
+
+    // Guardar el rol en estado
+    setRole(decodedToken.role);
   }, [router]);
 
+  if (!role) return null; // Esperar a que el rol esté disponible antes de renderizar
+
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
+    <Layout role={role}>
+      <h1 className="text-2xl font-bold mb-4 text-black">Contenido de Administrador</h1>
       {/* Aquí iría el contenido específico para el Admin */}
-    </div>
+    </Layout>
   );
 }
