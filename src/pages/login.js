@@ -1,19 +1,34 @@
-// src/pages/login.js
 import axios from "axios";
 import { useState } from "react";
 import { Button } from "@heroui/react";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/login", { email, password });
       localStorage.setItem("token", data.token);
-      window.location.href = "/dashboard";
+
+      // Decodificar el token para obtener el rol
+      const decodedToken = JSON.parse(atob(data.token.split('.')[1]));
+      const userRole = decodedToken.role;
+
+      // Redirigir al dashboard correspondiente según el rol
+      if (userRole === "ADMIN") {
+        router.push("/dashboard/admin");
+      } else if (userRole === "PROJECT_MANAGER") {
+        router.push("/dashboard/pm");
+      } else if (userRole === "TEAM_MEMBER") {
+        router.push("/dashboard/team");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError(err.response?.data?.error || "Error al iniciar sesión");
     }
