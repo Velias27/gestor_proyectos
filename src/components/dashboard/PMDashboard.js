@@ -28,12 +28,33 @@ export default function PMDashboard() {
     setRole(decodedToken.role);
   }, [router]);
 
-  if (!role) return null; // Espera a que el rol esté disponible antes de renderizar
+  if (!role) return null; // Esperar a que el rol esté disponible antes de renderizar
 
   return (
     <Layout role={role}>
-      <h1 className="text-2xl font-bold mb-4 text-black">Contenido de Project Manager</h1>
-      {/* Aquí iría el contenido específico para el Project Manager */}
+      {/* Sección de bienvenida */}
+      <div className="mb-6">
+        <p className="text-lg text-gray-700">👋 ¡Hola, Project Manager!</p>
+        <p className="text-sm text-gray-500">Aquí tienes un resumen de tus proyectos y tareas.</p>
+      </div>
+
+      {/* Tarjetas de métricas */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-700">Proyectos gestionados</h3>
+          <p className="text-3xl mt-2 font-bold text-blue-500">6</p>
+        </div>
+
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-700">Tareas asignadas</h3>
+          <p className="text-3xl mt-2 font-bold text-purple-500">28</p>
+        </div>
+
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-700">Miembros del equipo</h3>
+          <p className="text-3xl mt-2 font-bold text-green-500">10</p>
+        </div>
+      </div>
     </Layout>
   );
 }

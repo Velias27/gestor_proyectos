@@ -32,8 +32,29 @@ export default function TeamDashboard() {
 
   return (
     <Layout role={role}>
-      <h1 className="text-2xl font-bold mb-4 text-black">Contenido de Team Member</h1>
-      {/* Aquí iría el contenido específico para el Team Member */}
+      {/* Sección de bienvenida */}
+      <div className="mb-6">
+        <p className="text-lg text-gray-700">👋 ¡Hola, Miembro del equipo!</p>
+        <p className="text-sm text-gray-500">Estas son tus tareas y prioridades actuales.</p>
+      </div>
+
+      {/* Tarjetas de métricas */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-700">Tareas asignadas</h3>
+          <p className="text-3xl mt-2 font-bold text-blue-500">14</p>
+        </div>
+
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-700">Tareas completadas</h3>
+          <p className="text-3xl mt-2 font-bold text-green-500">8</p>
+        </div>
+
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-700">Pendientes por hoy</h3>
+          <p className="text-3xl mt-2 font-bold text-red-500">3</p>
+        </div>
+      </div>
     </Layout>
   );
 }
