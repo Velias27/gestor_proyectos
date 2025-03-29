@@ -9,6 +9,7 @@ async function main() {
   const passwordAdmin = await bcrypt.hash("adminPassword", 10);
   const passwordPM = await bcrypt.hash("pmPassword", 10);
   const passwordTeam = await bcrypt.hash("teamPassword", 10);
+  const passwordTeam2 = await bcrypt.hash("teamPassword", 10);
 
   // Crear usuario ADMIN
   const adminUser = await prisma.user.create({
@@ -40,8 +41,17 @@ async function main() {
     },
   });
 
+  const teamUser2 = await prisma.user.create({
+    data: {
+      name: "user2",
+      email: "team2@example.com",
+      password: passwordTeam2,
+      role: "TEAM_MEMBER",
+    },
+  });
+
   console.log("Usuarios creados:");
-  console.log({ adminUser, pmUser, teamUser });
+  console.log({ adminUser, pmUser, teamUser , teamUser2});
 }
 
 main()

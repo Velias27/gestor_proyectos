@@ -30,6 +30,11 @@ export default function TeamDashboard() {
 
   if (!role) return null; // Esperar a que el rol esté disponible antes de renderizar
 
+  const handleRedirect = () => {
+    // Redirigir a user/indexuser
+    router.push("/users/indexUser");
+  };
+
   return (
     <Layout role={role}>
       {/* Sección de bienvenida */}
@@ -54,6 +59,16 @@ export default function TeamDashboard() {
           <h3 className="text-xl font-semibold text-gray-700">Pendientes por hoy</h3>
           <p className="text-3xl mt-2 font-bold text-red-500">3</p>
         </div>
+      </div>
+
+      {/* Botón para redirigir */}
+      <div className="mt-6">
+        <button 
+          onClick={handleRedirect}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+        >
+          Ir a mi página
+        </button>
       </div>
     </Layout>
   );
