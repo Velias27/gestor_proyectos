@@ -13,8 +13,8 @@ export default function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/login", { email, password });
-      localStorage.setItem("token", data.token);  // Guardar token en localStorage
-      router.push("/dashboard");  // Redirigir al dashboard
+      localStorage.setItem("token", data.token);
+      router.push("/dashboard");
     } catch (err) {
       setError(err.response?.data?.error || "Error al iniciar sesión");
     }
@@ -22,7 +22,7 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
-      <div className="w-full max-w-md p-8 space-y-6 bg-content1 rounded-lg shadow">
+      <div className="w-full max-w-md p-8 space-y-6 bg-gray-200 rounded-lg shadow">
         <h2 className="text-2xl font-bold text-center">Iniciar Sesión</h2>
         {error && <p className="text-red-500">{error}</p>}
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -36,7 +36,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Ingresa tu email"
-              className="w-full px-3 py-2 border border-divider rounded"
+              className="w-full px-3 py-2 border border-divider rounded-xl bg-gray-100"
             />
           </div>
           <div>
@@ -49,13 +49,18 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Ingresa tu contraseña"
-              className="w-full px-3 py-2 border border-divider rounded"
+              className="w-full px-3 py-2 border border-divider rounded-xl bg-gray-100"
             />
           </div>
           <div>
-            <Button type="submit" className="w-full" color="primary">
+            <button
+              type="submit"
+              className="w-full px-4 py-2 mt-5 bg-blue-500 text-white rounded-xl 
+                         hover:bg-blue-700 focus:outline-none focus:ring-2 
+                         focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            >
               Iniciar Sesión
-            </Button>
+            </button>
           </div>
         </form>
       </div>
