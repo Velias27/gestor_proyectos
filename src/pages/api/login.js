@@ -25,10 +25,16 @@ export default async function handler(req, res) {
     }
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
+      {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
+
+    console.log("Token generado:", token);
 
     return res.status(200).json({ token });
   } catch (error) {

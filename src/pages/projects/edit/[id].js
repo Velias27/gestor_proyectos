@@ -19,7 +19,7 @@ export default function EditProject() {
 
   useEffect(() => {
     if (!id) return;
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (!token) {
       router.replace("/login");
       return;
@@ -44,7 +44,7 @@ export default function EditProject() {
   }, [id, router]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (!token) return;
     const fetchTeamMembers = async () => {
       try {
@@ -61,7 +61,7 @@ export default function EditProject() {
 
   const handleAddTask = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     try {
       const res = await axios.post(
@@ -79,7 +79,7 @@ export default function EditProject() {
       setTasks([...tasks, res.data.task]);
       setTaskTitle("");
       setSelectedTeamMembers([]);
-      setTaskComments("");    // Limpiamos los comentarios
+      setTaskComments(""); // Limpiamos los comentarios
       setTaskStatus("PENDING"); // Limpiamos el estado
     } catch (err) {
       console.error("Error al añadir tarea:", err);
@@ -100,7 +100,9 @@ export default function EditProject() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setTasks(tasks.map(task => task.id === taskId ? res.data.task : task));
+      setTasks(
+        tasks.map((task) => (task.id === taskId ? res.data.task : task))
+      );
     } catch (err) {
       console.error("Error al actualizar el estado de la tarea:", err);
       setError("Error al actualizar el estado de la tarea.");
@@ -133,10 +135,15 @@ export default function EditProject() {
 
         {/* Mostrar tareas existentes */}
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-gray-700">Tareas del Proyecto</h2>
+          <h2 className="text-2xl font-semibold text-gray-700">
+            Tareas del Proyecto
+          </h2>
           <div className="space-y-4">
             {tasks.map((task) => (
-              <div key={task.id} className="flex items-center space-x-4 bg-white p-4 rounded shadow-sm">
+              <div
+                key={task.id}
+                className="flex items-center space-x-4 bg-white p-4 rounded shadow-sm"
+              >
                 <div className="flex-1">
                   <strong>{task.title}</strong>
                   <p className="text-gray-500">{task.comments}</p>
@@ -145,7 +152,9 @@ export default function EditProject() {
                   {/* Dropdown para editar el estado */}
                   <select
                     value={task.status}
-                    onChange={(e) => handleUpdateTaskStatus(task.id, e.target.value)}
+                    onChange={(e) =>
+                      handleUpdateTaskStatus(task.id, e.target.value)
+                    }
                     className="border border-gray-300 rounded text-black px-3 py-2"
                   >
                     <option value="PENDING">Pendiente</option>
@@ -162,12 +171,16 @@ export default function EditProject() {
         {/* Formulario para añadir una nueva tarea */}
         <Card className="mb-6 shadow-lg rounded-lg overflow-hidden">
           <div className="p-4 bg-gray-100 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-700">Añadir Tarea</h2>
+            <h2 className="text-xl font-semibold text-gray-700">
+              Añadir Tarea
+            </h2>
           </div>
           <div className="p-4 bg-white">
             <form onSubmit={handleAddTask}>
               <div className="mb-4">
-                <label className="block mb-1 font-medium text-gray-700">Comentarios</label>
+                <label className="block mb-1 font-medium text-gray-700">
+                  Comentarios
+                </label>
                 <textarea
                   value={taskComments}
                   onChange={(e) => setTaskComments(e.target.value)}
@@ -178,7 +191,9 @@ export default function EditProject() {
 
               {/* Dropdown para el estatus */}
               <div className="mb-4">
-                <label className="block mb-1 font-medium text-gray-700">Estado</label>
+                <label className="block mb-1 font-medium text-gray-700">
+                  Estado
+                </label>
                 <select
                   value={taskStatus}
                   onChange={(e) => setTaskStatus(e.target.value)}
@@ -193,12 +208,17 @@ export default function EditProject() {
 
               {/* Dropdown para seleccionar usuarios */}
               <div className="mb-4">
-                <label className="block mb-1 font-medium text-gray-700">Asignar usuarios</label>
+                <label className="block mb-1 font-medium text-gray-700">
+                  Asignar usuarios
+                </label>
                 <select
                   multiple
                   value={selectedTeamMembers}
                   onChange={(e) => {
-                    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+                    const selectedOptions = Array.from(
+                      e.target.selectedOptions,
+                      (option) => option.value
+                    );
                     setSelectedTeamMembers(selectedOptions);
                   }}
                   className="border border-gray-300 rounded text-black w-full px-3 py-2 focus:outline-none focus:border-blue-500"

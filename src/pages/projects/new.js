@@ -1,3 +1,4 @@
+//src\pages\projects\new.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -8,7 +9,7 @@ export default function NewProject() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");  // Usar localStorage en vez de sessionStorage
+    const token = sessionStorage.getItem("token");
     if (!token) {
       router.replace("/login");
     }
@@ -19,7 +20,7 @@ export default function NewProject() {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");  // Usar localStorage para obtener el token
+      const token = sessionStorage.getItem("token");
       if (!token) {
         setError("Token no encontrado, por favor inicia sesión.");
         router.replace("/login");
@@ -27,7 +28,7 @@ export default function NewProject() {
       }
 
       await axios.post(
-        "/api/projects",  // Cambié la ruta de "relativa" a "absoluta"
+        "/api/projects",
         { name },
         {
           headers: {
@@ -45,7 +46,9 @@ export default function NewProject() {
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
-        <h1 className="text-2xl text-black font-bold mb-4">Crear nuevo proyecto</h1>
+        <h1 className="text-2xl text-black font-bold mb-4">
+          Crear nuevo proyecto
+        </h1>
         {error && <p className="text-red-500 mb-2">{error}</p>}
 
         <form onSubmit={handleSubmit}>

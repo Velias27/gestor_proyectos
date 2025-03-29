@@ -1,9 +1,10 @@
+//src\pages\projects\index.js
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Card } from "@heroui/card";
 import { Button } from "@heroui/button";
-import { isAuthenticated, getDecodedToken } from '../../../lib/auth'; // Importar helper
+import { isAuthenticated, getDecodedToken } from "../../../lib/auth";
 
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
@@ -11,10 +12,10 @@ export default function ProjectList() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");  // Recuperar token de localStorage
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
-      router.replace("/login");  // Si no hay token, redirigir al login
+      router.replace("/login");
       return;
     }
 
@@ -22,7 +23,7 @@ export default function ProjectList() {
       try {
         const res = await axios.get("/api/projects", {
           headers: {
-            Authorization: `Bearer ${token}`,  // Incluir token en el header
+            Authorization: `Bearer ${token}`,
           },
         });
         setProjects(res.data.projects);
@@ -57,14 +58,19 @@ export default function ProjectList() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Mis Proyectos</h1>
-          <Button onClick={handleAddProject} className="px-4 py-2 text-blue-600">
+          <Button
+            onClick={handleAddProject}
+            className="px-4 py-2 text-blue-600"
+          >
             Agregar Proyecto
           </Button>
         </header>
 
         <Card className="shadow-lg rounded-lg overflow-hidden">
           <div className="p-4 bg-gray-100 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-700">Lista de Proyectos</h2>
+            <h2 className="text-xl font-semibold text-gray-700">
+              Lista de Proyectos
+            </h2>
           </div>
 
           <div className="p-4 bg-white">
@@ -74,16 +80,25 @@ export default function ProjectList() {
                   <tr>
                     <th className="py-3 px-4 font-semibold">Nombre</th>
                     <th className="py-3 px-4 font-semibold">Tareas</th>
-                    <th className="py-3 px-4 font-semibold text-right">Acciones</th>
+                    <th className="py-3 px-4 font-semibold text-right">
+                      Acciones
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-700 text-sm">
                   {projects?.map((project) => (
-                    <tr key={project.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    <tr
+                      key={project.id}
+                      className="border-b border-gray-200 hover:bg-gray-50"
+                    >
                       <td className="py-3 px-4">{project.name}</td>
                       <td className="py-3 px-4">{project.tasks.length}</td>
                       <td className="py-3 px-4 text-right">
-                        <Button className="text-blue-600 hover:underline" onClick={() => handleEdit(project.id)} variant="link">
+                        <Button
+                          className="text-blue-600 hover:underline"
+                          onClick={() => handleEdit(project.id)}
+                          variant="link"
+                        >
                           Editar
                         </Button>
                       </td>
@@ -91,7 +106,10 @@ export default function ProjectList() {
                   ))}
                   {projects?.length === 0 && (
                     <tr>
-                      <td colSpan={3} className="text-center py-4 text-gray-500">
+                      <td
+                        colSpan={3}
+                        className="text-center py-4 text-gray-500"
+                      >
                         No hay proyectos registrados.
                       </td>
                     </tr>

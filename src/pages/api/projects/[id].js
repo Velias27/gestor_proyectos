@@ -15,16 +15,16 @@ export default async function handler(req, res) {
           where: { id },
           include: {
             tasks: {
-              select: {   // Usamos select en lugar de include
+              select: {
                 id: true,
                 title: true,
                 completed: true,
                 assignedTo: true,
                 assignee: {
-                  select: { name: true }
+                  select: { name: true },
                 },
-                status: true,   // Seleccionar el campo status
-                comments: true, // Seleccionar el campo comments
+                status: true,
+                comments: true,
               },
             },
           },

@@ -39,7 +39,7 @@
 
 /* TABLAS */
 .customTableContainer {
-  @apply overflow-x-auto mt-6 shadow-lg;
+  @apply overflow-x-auto mt-6 shadow-lg w-full;
 }
 
 .customTable {
