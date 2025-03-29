@@ -1,4 +1,3 @@
-// pages/projects/new.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -9,7 +8,7 @@ export default function NewProject() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");  // Usar localStorage en vez de sessionStorage
     if (!token) {
       router.replace("/login");
     }
@@ -20,9 +19,15 @@ export default function NewProject() {
     setError("");
 
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");  // Usar localStorage para obtener el token
+      if (!token) {
+        setError("Token no encontrado, por favor inicia sesión.");
+        router.replace("/login");
+        return;
+      }
+
       await axios.post(
-        "../api/projects", 
+        "/api/projects",  // Cambié la ruta de "relativa" a "absoluta"
         { name },
         {
           headers: {

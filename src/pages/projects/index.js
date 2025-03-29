@@ -5,7 +5,6 @@ import { Card } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { isAuthenticated, getDecodedToken } from "../../../lib/auth";
 import { motion } from "framer-motion";
-
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
