@@ -38,7 +38,7 @@ export default function PMDashboard() {
 
   return (
     <Layout role={role}>
-      <div className="min-h-screen p-6 bg-gray-50">
+      <div className="p-6 bg-gray-50">
         <h1 className="text-3xl font-bold mb-6 text-gray-800">
           Project Manager Dashboard
         </h1>

@@ -35,13 +35,21 @@ const Sidebar = ({ role }) => {
               </Link>
             </>
           )}
-          {role === "PM" && (
-            <Link
-              href="/dashboard/pm"
-              className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
-            >
-              <Users size={20} /> PM Dashboard
-            </Link>
+          {role === "PROJECT_MANAGER" && (
+            <>
+              <Link
+                href="/dashboard/admin"
+                className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
+              >
+                <LayoutGrid size={20} /> Dashboard
+              </Link>
+              <Link
+                href="/projects"
+                className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
+              >
+                <Briefcase  size={20} /> Proyectos
+              </Link>
+            </>
           )}
           {role === "TEAM" && (
             <Link
@@ -52,16 +60,6 @@ const Sidebar = ({ role }) => {
             </Link>
           )}
         </nav>
-      </div>
-
-      <div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 hover:text-red-400 transition-colors px-3 py-2 rounded w-full"
-        >
-          <LogOut size={20} />
-          Salir
-        </button>
       </div>
     </aside>
   );
