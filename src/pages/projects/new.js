@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import Layout from "@/components/layout/Layout";
 import Swal from "sweetalert2";
+import { Button } from "@heroui/button";
+import { ArrowLeft} from "lucide-react";
 
 const getTodayDate = () => {
   const today = new Date();
@@ -98,7 +100,7 @@ export default function NewProject() {
 
   if (!role) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center">
         <p>Cargando...</p>
       </div>
     );
@@ -106,7 +108,18 @@ export default function NewProject() {
 
   return (
     <Layout role={role}>
-      <div className="max-w-2xl mx-auto bg-white p-6 mt-10 rounded shadow">
+
+      <div className="max-w-2xl mx-auto bg-white p-6 mt-2 rounded shadow">
+      <div className="mb-4">
+          <Button
+            onClick={() => router.push("/projects")}
+            className="flex items-center gap-2 text-sm text-gray-700 hover:text-blue-600"
+            variant="ghost"
+          >
+            <ArrowLeft size={18} /> Volver a proyectos
+          </Button>
+        </div>
+
         <h1 className="text-2xl font-bold mb-4 text-black">Crear nuevo proyecto</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

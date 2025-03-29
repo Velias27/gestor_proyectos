@@ -61,6 +61,15 @@ const Sidebar = ({ role }) => {
           )}
         </nav>
       </div>
+      <div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 hover:text-red-400 transition-colors px-3 py-2 rounded w-full"
+        >
+          <LogOut size={20} />
+          Salir
+        </button>
+      </div>
     </aside>
   );
 };

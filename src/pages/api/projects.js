@@ -39,7 +39,6 @@ export default async function handler(req, res) {
           error: "Faltan campos obligatorios: nombre, fecha de inicio o fecha de fin",
         });
       }
-s
       const newProject = await prisma.project.create({
         data: {
           name,

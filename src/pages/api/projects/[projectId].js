@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const user = authenticate(req, res);
   if (!user) return;
 
-  const { id } = req.query;
+  const { projectId: id } = req.query;
   const { method } = req;
 
   switch (method) {
