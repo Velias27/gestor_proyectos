@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "sh ./vercel-build.sh"
+    "build": "sh ./vercel-build.sh",
     "start": "next start",
     "postinstall": "prisma generate",
     "lint": "next lint",
