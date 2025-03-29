@@ -41,9 +41,10 @@ export default async function handler(req, res) {
     case "PUT":
       try {
         const { name } = req.body;
+        const { comment } = req.body;
         const updatedProject = await prisma.project.update({
           where: { id },
-          data: { name },
+          data: { name, comment },
         });
         return res.status(200).json({ project: updatedProject });
       } catch (error) {
