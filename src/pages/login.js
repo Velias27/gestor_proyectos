@@ -1,19 +1,20 @@
-// src/pages/login.js
 import axios from "axios";
 import { useState } from "react";
 import { Button } from "@heroui/react";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/login", { email, password });
-      sessionStorage.setItem("token", data.token);
-      window.location.href = "/dashboard";
+      localStorage.setItem("token", data.token);  // Guardar token en localStorage
+      router.push("/dashboard");  // Redirigir al dashboard
     } catch (err) {
       setError(err.response?.data?.error || "Error al iniciar sesión");
     }
