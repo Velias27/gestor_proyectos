@@ -52,7 +52,7 @@ export default function PMDashboard() {
             Ir a Proyectos
           </Button>
         </div>
-
+        <br />
         <div className="mb-6">
           <p className="text-lg text-gray-700">👋 ¡Hola, Project Manager!</p>
           <p className="text-sm text-gray-500">

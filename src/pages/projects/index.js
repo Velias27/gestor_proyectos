@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { Card } from "@heroui/card";
 import { Button } from "@heroui/button";
-import { isAuthenticated, getDecodedToken } from "../../../lib/auth";
 import { motion } from "framer-motion";
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
@@ -60,9 +59,10 @@ export default function ProjectList() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex justify-between items-center mb-8"
+          className="flex justify-between items-center mb-8 gap-6"
         >
           <h1 className="text-4xl font-extrabold text-gray-900">Mis Proyectos</h1>
+
           <Button
             onClick={handleAddProject}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition-all duration-300"
@@ -95,6 +95,12 @@ export default function ProjectList() {
                       Nombre
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                      Fecha Inicio
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                      Fecha Fin
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                       Tareas
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -102,6 +108,7 @@ export default function ProjectList() {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody className="bg-white divide-y divide-gray-200">
                   {projects?.map((project) => (
                     <motion.tr
@@ -113,6 +120,12 @@ export default function ProjectList() {
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {project.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {project.startDate ? new Date(project.startDate).toDateString() : "-"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {project.endDate ? new Date(project.endDate).toDateString() : "-"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {project.tasks.length}
@@ -130,12 +143,13 @@ export default function ProjectList() {
                   ))}
                   {projects?.length === 0 && (
                     <tr>
-                      <td colSpan={3} className="px-6 py-4 text-center text-gray-500">
+                      <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                         No hay proyectos registrados.
                       </td>
                     </tr>
                   )}
                 </tbody>
+
               </table>
             </div>
           </motion.div>

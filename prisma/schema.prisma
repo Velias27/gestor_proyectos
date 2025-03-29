@@ -25,6 +25,9 @@ model User {
 model Project {
   id      String  @id @default(uuid())
   name    String
+  comment   String? 
+  startDate DateTime 
+  endDate   DateTime 
   userId  String
   user    User    @relation(fields: [userId], references: [id])
   tasks   Task[]
