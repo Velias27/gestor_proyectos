@@ -28,12 +28,22 @@ export default function NewProject() {
 
     try {
       const decoded = JSON.parse(atob(token.split(".")[1]));
+    
+      // Redirigir si es ADMIN
+      if (decoded.role === "ADMIN") {
+        router.replace("/dashboard/admin");
+        return;
+      }
+    
       setRole(decoded.role);
-    } catch (error) {
-      console.error("Error decodificando token:", error);
-      localStorage.removeItem("token");
+      setUserId(decoded.userId);
+    } catch (err) {
+      console.error("Error al decodificar token", err);
       router.replace("/login");
+      return;
     }
+    
+
   }, [router]);
 
   const handleSubmit = async (e) => {

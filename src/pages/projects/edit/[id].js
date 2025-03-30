@@ -33,14 +33,24 @@ export default function EditProject() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return router.replace("/login");
+
     try {
       const decoded = JSON.parse(atob(token.split(".")[1]));
+
+      // Redirigir si es ADMIN
+      if (decoded.role === "ADMIN") {
+        router.replace("/dashboard/admin");
+        return;
+      }
+
       setRole(decoded.role);
       setUserId(decoded.userId);
     } catch (err) {
-      console.error("Token inválido:", err);
-      return router.replace("/login");
+      console.error("Error al decodificar token", err);
+      router.replace("/login");
+      return;
     }
+
 
     if (!id) return;
 
@@ -193,6 +203,22 @@ export default function EditProject() {
     return <div className="p-10 text-center">Cargando proyecto...</div>;
   }
 
+  const getBorderColorByStatus = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "border-yellow-500";
+      case "IN_PROGRESS":
+        return "border-blue-500";
+      case "BLOCKED":
+        return "border-red-500";
+      case "COMPLETED":
+        return "border-green-500";
+      default:
+        return "border-gray-300";
+    }
+  };
+
+
   return (
     <Layout role={role}>
       <div className="bg-gray-50 p-6">
@@ -256,7 +282,8 @@ export default function EditProject() {
               <div
                 key={task.id}
                 onClick={() => canEdit && openTaskModal(task)}
-                className={`relative flex items-start gap-4 bg-white p-4 rounded-lg shadow border-l-4 ${canEdit ? "cursor-pointer border-blue-500 hover:bg-blue-50" : "cursor-not-allowed opacity-70 border-gray-300"}`}
+                className={`relative flex items-start gap-4 bg-white p-4 rounded-lg shadow border-l-4 ${getBorderColorByStatus(task.status)
+                  } ${canEdit ? "cursor-pointer hover:bg-gray-50" : "cursor-not-allowed opacity-70"}`}
               >
                 <input
                   type="checkbox"

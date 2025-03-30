@@ -25,12 +25,21 @@ export default function UsersDashboard() {
 
   useEffect(() => {
     if (token) {
-      try {
-        const decoded = JSON.parse(atob(token.split(".")[1]));
-        setRole(decoded.role);
-      } catch (error) {
-        console.error("Error decodificando el token:", error);
-      }
+      if (token) {
+        try {
+          const decoded = JSON.parse(atob(token.split(".")[1]));
+      
+          if (decoded.role !== "ADMIN") {
+            window.location.href = "/dashboard";
+            return;
+          }
+      
+          setRole(decoded.role);
+        } catch (error) {
+          console.error("Error decodificando el token:", error);
+          window.location.href = "/login"; 
+        }
+      }      
     }
   }, [token]);
 
@@ -51,12 +60,8 @@ export default function UsersDashboard() {
       console.error("Error:", error.response?.data);
       setIsLoading(false);
 
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudieron cargar los usuarios. Por favor, intenta de nuevo.",
-        confirmButtonColor: "#4b5563",
-      });
+      window.location.href = "/dashboard";
+      return;
 
       if (error.response?.status === 401) {
         localStorage.removeItem("token");

@@ -5,6 +5,9 @@ import { Card } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
+import { Pencil, Trash } from "lucide-react";
+import Swal from "sweetalert2";
+
 
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
@@ -25,6 +28,12 @@ export default function ProjectList() {
 
     try {
       decoded = JSON.parse(atob(token.split(".")[1]));
+      
+      if (decoded.role === "ADMIN") {
+        router.replace("/dashboard/admin");
+        return;
+      }
+    
       setRole(decoded.role);
       setUserId(decoded.userId);
     } catch (err) {
@@ -32,6 +41,7 @@ export default function ProjectList() {
       router.replace("/login");
       return;
     }
+    
 
     const fetchProjects = async () => {
       try {
@@ -84,6 +94,34 @@ export default function ProjectList() {
       </div>
     );
   }
+
+  const handleDeleteProject = async (id) => {
+    const token = localStorage.getItem("token");
+    const result = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará el proyecto permanentemente",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e3342f",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`/api/projects/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setProjects((prev) => prev.filter((p) => p.id !== id));
+        Swal.fire("Eliminado", "El proyecto ha sido eliminado", "success");
+      } catch (err) {
+        console.error("Error al eliminar proyecto:", err);
+        Swal.fire("Error", "No se pudo eliminar el proyecto", "error");
+      }
+    }
+  };
+
 
   return (
     <Layout role={role}>
@@ -174,7 +212,7 @@ export default function ProjectList() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {project.tasks?.length ?? 0}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex items-center justify-end gap-3">
                           {role === "TEAM_MEMBER" ? (
                             <Button
                               onClick={() => handleViewTasks(project.id)}
@@ -184,13 +222,22 @@ export default function ProjectList() {
                               Ver Tareas
                             </Button>
                           ) : (
-                            <Button
-                              onClick={() => handleEdit(project.id)}
-                              variant="link"
-                              className="text-blue-600 hover:underline"
-                            >
-                              Editar
-                            </Button>
+                            <>
+                              <button
+                                onClick={() => handleEdit(project.id)}
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Editar"
+                              >
+                                <Pencil size={18} />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteProject(project.id)}
+                                className="text-red-500 hover:text-red-700"
+                                title="Eliminar"
+                              >
+                                <Trash size={18} />
+                              </button>
+                            </>
                           )}
                         </td>
                       </motion.tr>
