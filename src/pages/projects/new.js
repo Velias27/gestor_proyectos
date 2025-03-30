@@ -34,9 +34,7 @@ export default function NewProject() {
         router.replace("/dashboard/admin");
         return;
       }
-    
       setRole(decoded.role);
-      setUserId(decoded.userId);
     } catch (err) {
       console.error("Error al decodificar token", err);
       router.replace("/login");
