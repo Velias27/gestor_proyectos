@@ -3,25 +3,30 @@ import prisma from "/lib/prisma";
 export default async function handler(req, res) {
   const { taskId } = req.query;
 
-
   if (req.method === "PUT") {
     const { title, status, comments, assignedUsers } = req.body;
     try {
-      const updated = await prisma.task.update({
+      const updatedTask = await prisma.task.update({
         where: { id: taskId },
         data: {
           title,
           status,
           comments,
-          assignedTo: assignedUsers?.[0] || null,
+          assignees: {
+            set: assignedUsers.map((id) => ({ id })),
+          },
         },
         include: {
-          assignee: {
-            select: { id: true, name: true },
+          assignees: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
       });
-      return res.status(200).json({ task: updated });
+
+      return res.status(200).json({ task: updatedTask });
     } catch (error) {
       console.error("Error al actualizar tarea:", error);
       return res.status(500).json({ error: "Error al actualizar tarea" });

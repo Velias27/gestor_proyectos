@@ -32,7 +32,7 @@ export default function TeamDashboard() {
 
   const handleRedirect = () => {
     // Redirigir a user/indexuser
-    router.push("/users/indexUser");
+    router.push("/projects");
   };
 
   return (
@@ -42,6 +42,18 @@ export default function TeamDashboard() {
         <p className="text-lg text-gray-700">👋 ¡Hola, Miembro del equipo!</p>
         <p className="text-sm text-gray-500">Estas son tus tareas y prioridades actuales.</p>
       </div>
+
+      {/* Botón para redirigir */}
+      <div className="mt-6">
+        <button
+          onClick={handleRedirect}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+        >
+          Mis proyectos
+        </button>
+      </div>
+
+      <br/>
 
       {/* Tarjetas de métricas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -59,16 +71,6 @@ export default function TeamDashboard() {
           <h3 className="text-xl font-semibold text-gray-700">Pendientes por hoy</h3>
           <p className="text-3xl mt-2 font-bold text-red-500">3</p>
         </div>
-      </div>
-
-      {/* Botón para redirigir */}
-      <div className="mt-6">
-        <button 
-          onClick={handleRedirect}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
-        >
-          Ir a mi página
-        </button>
       </div>
     </Layout>
   );

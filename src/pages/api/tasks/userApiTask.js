@@ -18,7 +18,6 @@ export default async function handler(req, res) {
         if (!assignedTo) {
           return res.status(400).json({ error: "Se debe proporcionar el ID del usuario (assignedTo)" });
         }
-        console.log(assignedTo)
         // Buscar el proyecto con las tareas asignadas al usuario
         const project = await prisma.project.findUnique({
           where: { id },

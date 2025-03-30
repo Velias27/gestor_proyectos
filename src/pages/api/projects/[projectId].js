@@ -15,16 +15,13 @@ export default async function handler(req, res) {
           where: { id },
           include: {
             tasks: {
-              select: {   // Usamos select en lugar de include
-                id: true,
-                title: true,
-                completed: true,
-                assignedTo: true,
-                assignee: {
-                  select: { name: true }
+              include: {
+                assignees: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
                 },
-                status: true,   // Seleccionar el campo status
-                comments: true, // Seleccionar el campo comments
               },
             },
           },
@@ -38,10 +35,10 @@ export default async function handler(req, res) {
         console.error(error);
         return res.status(500).json({ error: "Error al obtener proyecto" });
       }
+
     case "PUT":
       try {
-        const { name } = req.body;
-        const { comment } = req.body;
+        const { name, comment } = req.body;
         const updatedProject = await prisma.project.update({
           where: { id },
           data: { name, comment },
@@ -51,6 +48,7 @@ export default async function handler(req, res) {
         console.error(error);
         return res.status(500).json({ error: "Error al actualizar proyecto" });
       }
+
     case "DELETE":
       try {
         const deletedProject = await prisma.project.delete({
@@ -61,6 +59,7 @@ export default async function handler(req, res) {
         console.error(error);
         return res.status(500).json({ error: "Error al eliminar proyecto" });
       }
+
     default:
       res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
       return res.status(405).json({ error: `Método ${method} no permitido` });

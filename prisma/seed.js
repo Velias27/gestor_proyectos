@@ -49,9 +49,6 @@ async function main() {
       role: "TEAM_MEMBER",
     },
   });
-
-  console.log("Usuarios creados:");
-  console.log({ adminUser, pmUser, teamUser , teamUser2});
 }
 
 main()

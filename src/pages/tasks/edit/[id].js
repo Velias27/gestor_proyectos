@@ -19,7 +19,7 @@ export default function EditTask() {
   // Obtener datos de la tarea
   useEffect(() => {
     if (!id) return;
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (!token) {
       router.replace("/login");
       return;
@@ -44,7 +44,7 @@ export default function EditTask() {
 
   // Obtener la lista de team members
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (!token) return;
     const fetchTeamMembers = async () => {
       try {
@@ -60,7 +60,7 @@ export default function EditTask() {
   }, []);
 
   const handleToggleEditingTitle = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (isEditingTitle) {
       // Confirmar actualización del título
       try {
@@ -82,7 +82,7 @@ export default function EditTask() {
 
   const handleUpdateAssignedUsers = async (e) => {
     e.preventDefault();
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     setError("");
     setSuccess("");
     try {

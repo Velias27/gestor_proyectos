@@ -7,7 +7,7 @@ const Sidebar = ({ role }) => {
   const router = useRouter();
 
   const handleLogout = () => {
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     router.push("/login");
   };
 
@@ -38,7 +38,7 @@ const Sidebar = ({ role }) => {
           {role === "PROJECT_MANAGER" && (
             <>
               <Link
-                href="/dashboard/admin"
+                href="/dashboard/pm"
                 className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
               >
                 <LayoutGrid size={20} /> Dashboard
@@ -47,17 +47,25 @@ const Sidebar = ({ role }) => {
                 href="/projects"
                 className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
               >
-                <Briefcase  size={20} /> Proyectos
+                <Briefcase size={20} /> Proyectos
               </Link>
             </>
           )}
-          {role === "TEAM" && (
-            <Link
-              href="/dashboard/team"
-              className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
-            >
-              <Home size={20} /> Team Dashboard
-            </Link>
+          {role === "TEAM_MEMBER" && (
+            <>
+              <Link
+                href="/dashboard/team"
+                className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
+              >
+                <LayoutGrid size={20} /> Dashboard
+              </Link>
+              <Link
+                href="/projects"
+                className="flex items-center gap-2 hover:text-blue-400 transition-colors px-3 py-2 rounded"
+              >
+                <Briefcase size={20} /> Mis Proyectos
+              </Link>
+            </>
           )}
         </nav>
       </div>

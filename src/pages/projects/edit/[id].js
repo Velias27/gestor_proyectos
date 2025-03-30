@@ -13,6 +13,7 @@ export default function EditProject() {
   const { id } = router.query;
 
   const [role, setRole] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [project, setProject] = useState(null);
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
@@ -32,10 +33,10 @@ export default function EditProject() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return router.replace("/login");
-
     try {
       const decoded = JSON.parse(atob(token.split(".")[1]));
       setRole(decoded.role);
+      setUserId(decoded.userId);
     } catch (err) {
       console.error("Token inválido:", err);
       return router.replace("/login");
@@ -85,6 +86,7 @@ export default function EditProject() {
   };
 
   const updateField = async (field, value) => {
+    if (role === "TEAM_MEMBER") return;
     if (field === "name" && !value.trim()) {
       reloadProject();
       return;
@@ -103,12 +105,15 @@ export default function EditProject() {
 
   const openTaskModal = (task = null) => {
     if (task) {
+      const isAssigned = task.assignees?.some((u) => u.id === userId);
+      if (role === "TEAM_MEMBER" && !isAssigned) return;
       setEditingTask(task);
       setTaskTitle(task.title);
       setTaskComments(task.comments || "");
       setTaskStatus(task.status);
-      setTaskAssignees(task.assignedTo ? [task.assignedTo] : []);
+      setTaskAssignees(task.assignees?.map((u) => u.id) || []);
     } else {
+      if (role === "TEAM_MEMBER") return;
       setEditingTask(null);
       setTaskTitle("");
       setTaskComments("");
@@ -136,6 +141,7 @@ export default function EditProject() {
         );
         setTasks(tasks.map((t) => (t.id === editingTask.id ? res.data.task : t)));
       } else {
+        if (role === "TEAM_MEMBER") return;
         const res = await axios.post(
           `/api/projects/${id}/tasks`,
           {
@@ -156,6 +162,7 @@ export default function EditProject() {
   };
 
   const handleDeleteTask = async (taskId) => {
+    if (role === "TEAM_MEMBER") return;
     const token = localStorage.getItem("token");
     const result = await Swal.fire({
       title: "¿Estás seguro?",
@@ -205,6 +212,7 @@ export default function EditProject() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => updateField("name", name)}
+              disabled={role === "TEAM_MEMBER"}
               className="text-2xl font-bold w-full bg-transparent text-gray-800 focus:outline-none"
             />
             <input
@@ -212,6 +220,7 @@ export default function EditProject() {
               onChange={(e) => setComment(e.target.value)}
               onBlur={() => updateField("comment", comment)}
               placeholder="Comentario..."
+              disabled={role === "TEAM_MEMBER"}
               className="mt-1 w-full bg-transparent text-gray-600 focus:outline-none"
             />
           </div>
@@ -231,43 +240,51 @@ export default function EditProject() {
           </div>
         </div>
 
-        <div className="mb-4">
-          <Button onClick={() => openTaskModal()} className="flex items-center gap-2">
-            <PlusCircle size={18} /> Añadir Tarea
-          </Button>
-        </div>
+        {role !== "TEAM_MEMBER" && (
+          <div className="mb-4">
+            <Button onClick={() => openTaskModal()} className="flex items-center gap-2">
+              <PlusCircle size={18} /> Añadir Tarea
+            </Button>
+          </div>
+        )}
 
         <div className="space-y-4">
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              onClick={() => openTaskModal(task)}
-              className="relative cursor-pointer flex items-start gap-4 bg-white p-4 rounded-lg shadow border-l-4 border-blue-500"
-            >
-              <input
-                type="checkbox"
-                checked={task.completed}
-                readOnly
-                className="mt-1 accent-blue-600"
-              />
-              <div className="flex-1">
-                <p className="font-semibold text-gray-800">{task.title}</p>
-                {task.comments && <p className="text-sm text-gray-500">{task.comments}</p>}
-                <p className="text-xs text-gray-400 italic">
-                  Estado: {task.status} | Asignado: {task.assignee?.name || "No asignado"}
-                </p>
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteTask(task.id);
-                }}
-                className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+          {tasks.map((task) => {
+            const isAssigned = task.assignees?.some((u) => u.id === userId);
+            const canEdit = role !== "TEAM_MEMBER" || isAssigned;
+            return (
+              <div
+                key={task.id}
+                onClick={() => canEdit && openTaskModal(task)}
+                className={`relative flex items-start gap-4 bg-white p-4 rounded-lg shadow border-l-4 ${canEdit ? "cursor-pointer border-blue-500 hover:bg-blue-50" : "cursor-not-allowed opacity-70 border-gray-300"}`}
               >
-                <X size={16} />
-              </button>
-            </div>
-          ))}
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  readOnly
+                  className="mt-1 accent-blue-600"
+                />
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-800">{task.title}</p>
+                  {task.comments && <p className="text-sm text-gray-500">{task.comments}</p>}
+                  <p className="text-xs text-gray-400 italic">
+                    Estado: {task.status} | Asignado: {task.assignees?.map((u) => u.name).join(", ") || "No asignado"}
+                  </p>
+                </div>
+                {role !== "TEAM_MEMBER" && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteTask(task.id);
+                    }}
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {showModal && (
@@ -283,6 +300,7 @@ export default function EditProject() {
                   placeholder="Título"
                   className="w-full border px-4 py-2 rounded"
                   required
+                  disabled={role === "TEAM_MEMBER"}
                 />
                 <textarea
                   value={taskComments}
@@ -309,6 +327,7 @@ export default function EditProject() {
                           type="checkbox"
                           value={member.id}
                           checked={taskAssignees.includes(member.id)}
+                          disabled={role === "TEAM_MEMBER"}
                           onChange={(e) => {
                             if (e.target.checked) {
                               setTaskAssignees([...taskAssignees, member.id]);
@@ -326,9 +345,11 @@ export default function EditProject() {
                   <Button type="button" onClick={() => setShowModal(false)} className="py-2 bg-gray-200">
                     Cancelar
                   </Button>
-                  <Button type="submit" className="bg-blue-600 text-white">
-                    {editingTask ? "Guardar cambios" : "Crear"}
-                  </Button>
+                  {(role !== "TEAM_MEMBER" || (editingTask && editingTask.assignees?.some(u => u.id === userId))) && (
+                    <Button type="submit" className="bg-blue-600 text-white">
+                      {editingTask ? "Guardar cambios" : "Crear"}
+                    </Button>
+                  )}
                 </div>
               </form>
             </div>
