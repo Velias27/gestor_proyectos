@@ -57,13 +57,17 @@ export default function ProjectList() {
         });
 
         const data =
-          decoded.role === "TEAM_MEMBER"
-            ? res.data.projects.filter((p) =>
-              p.tasks.some((t) => t.assignedToId === decoded.userId)
+        decoded.role === "TEAM_MEMBER"
+          ? res.data.projects.filter((p) =>
+              p.tasks.some((t) =>
+                t.assignees.some((a) => a.id === decoded.userId)
+              )
             )
-            : res.data.projects;
+          : res.data.projects;
+      
 
         setProjects(data);
+        console.log(data);
       } catch (error) {
         console.error("Error al obtener proyectos:", error);
       } finally {
