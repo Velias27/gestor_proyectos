@@ -144,9 +144,8 @@ const UserModal = ({ isOpen, onClose, onSave, initialData }) => {
                 if (errors.password) setErrors({ ...errors, password: "" });
               }}
               placeholder="Nueva contraseña (opcional)"
-              className={`customInput ${
-                errors.password ? "border-red-500" : ""
-              }`}
+              className={`customInput ${errors.password ? "border-red-500" : ""
+                }`}
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -163,9 +162,8 @@ const UserModal = ({ isOpen, onClose, onSave, initialData }) => {
                 if (errors.password) setErrors({ ...errors, password: "" });
               }}
               placeholder="Ingresa la contraseña"
-              className={`customPassword ${
-                errors.password ? "border-red-500" : ""
-              }`}
+              className={`customPassword ${errors.password ? "border-red-500" : ""
+                }`}
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>

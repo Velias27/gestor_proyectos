@@ -51,7 +51,6 @@ export default function EditProject() {
       return;
     }
 
-
     if (!id) return;
 
     const fetchData = async () => {
