@@ -1,6 +1,9 @@
 # Gestor de Proyectos
 Gestor de Proyectos es una aplicación web para la gestión de proyectos y tareas, diseñada para facilitar la organización y el seguimiento de proyectos colaborativos en entornos académicos o empresariales. La plataforma permite a los usuarios autenticados gestionar proyectos, tareas y equipos de trabajo de forma intuitiva y funcional.
 
+## Link Video
+https://youtu.be/WoJJoljAIPo
+
 ## Integrantes y avance
 Con el proyecto se logró un 90% de avance: 
 - Victor Amilcar Elías Peña                EP171613
